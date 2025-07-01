@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   db:
     image: mariadb:10.5
@@ -52,16 +54,16 @@ services:
       - dovecot
 
   dovecot:
-    image: dovecot/dovecot
+    build: ./dovecot
     container_name: mail-dovecot
     restart: unless-stopped
     ports:
       - "143:143"
       - "993:993"
     volumes:
-      - ./dovecot_conf/conf.d:/etc/dovecot/conf.d
+      - ./dovecot_conf:/etc/dovecot:ro
       - maildata:/var/mail
-    command: [ "dovecot", "-F" ]
+    command: [ "dovecot", "-F", "-c", "/etc/dovecot/dovecot.conf" ]
     depends_on:
       - db
 
