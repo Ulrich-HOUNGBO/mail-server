@@ -29,18 +29,26 @@ services:
       - db
 
   postfix:
-    image: catatnight/postfix
+    image: boky/postfix
     container_name: mail-postfix
     restart: unless-stopped
-    environment:
-      maildomain: tldiamond.com
-      smtp_user: user@tldiamond.com:password
     ports:
       - "25:25"
       - "587:587"
+    volumes:
+      - ./postfix:/etc/postfix
+    environment:
+      HOSTNAME: mail.tldiamond.com
+      DOMAIN: tldiamond.com
+      RELAY_NETWORKS: "192.168.0.0/16 10.0.0.0/8"
+      ENABLE_SASL: true
+      ENABLE_DKIM: true
+      DKIM_SELECTOR: default
+      DKIM_DOMAIN: tldiamond.com
+      DKIM_PRIVATE_KEY: /etc/opendkim/keys/tldiamond.com/default.private
     depends_on:
-      - db
       - opendkim
+      - dovecot
 
   dovecot:
     image: dovecot/dovecot
