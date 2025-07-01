@@ -1,0 +1,4 @@
+driver = mysql
+connect = host=db dbname=postfix user=mailuser password=mailpass
+default_pass_scheme = SHA512-CRYPT
+password_query = SELECT username as user, password FROM mailbox WHERE username = '%u' AND active = 1;

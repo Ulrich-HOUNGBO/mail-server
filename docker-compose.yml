@@ -1,0 +1,96 @@
+services:
+  db:
+    image: mariadb:10.5
+    container_name: mail-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: postfix
+      MYSQL_USER: mailuser
+      MYSQL_PASSWORD: mailpass
+    volumes:
+      - mail-db:/var/lib/mysql
+
+  postfixadmin:
+    image: hardware/postfixadmin
+    container_name: mail-postfixadmin
+    restart: unless-stopped
+    environment:
+      DBHOST: db
+      DBNAME: postfix
+      DBUSER: mailuser
+      DBPASS: mailpass
+      SETUP_PASSWORD: changeme
+      DOMAIN: tldiamond.com
+      USE_REVERSE_PROXY: "true"
+    ports:
+      - "8888:80"
+    depends_on:
+      - db
+
+  postfix:
+    image: catatnight/postfix
+    container_name: mail-postfix
+    restart: unless-stopped
+    environment:
+      maildomain: tldiamond.com
+      smtp_user: user@tldiamond.com:password
+    ports:
+      - "25:25"
+      - "587:587"
+    depends_on:
+      - db
+      - opendkim
+
+  dovecot:
+    image: tvial/docker-dovecot
+    container_name: mail-dovecot
+    restart: unless-stopped
+    ports:
+      - "143:143"
+      - "993:993"
+    volumes:
+      - ./dovecot_conf/conf.d:/etc/dovecot/conf.d
+      - ./dovecot_conf/dovecot-sql.conf.ext:/etc/dovecot/dovecot-sql.conf.ext
+      - maildata:/var/mail
+    depends_on:
+      - db
+
+  roundcube:
+    image: roundcube/roundcubemail
+    container_name: mail-webmail
+    restart: unless-stopped
+    environment:
+      ROUNDCUBEMAIL_DEFAULT_HOST: ssl://mail.tldiamond.com
+      ROUNDCUBEMAIL_SMTP_SERVER: tls://mail.tldiamond.com
+      ROUNDCUBEMAIL_SMTP_PORT: 587
+      ROUNDCUBEMAIL_DB_TYPE: mysql
+      ROUNDCUBEMAIL_DB_HOST: db
+      ROUNDCUBEMAIL_DB_USER: mailuser
+      ROUNDCUBEMAIL_DB_PASSWORD: mailpass
+      ROUNDCUBEMAIL_DB_NAME: postfix
+    ports:
+      - "8080:80"
+    depends_on:
+      - postfix
+      - dovecot
+      - db
+
+  opendkim:
+    image: instrumentisto/opendkim
+    container_name: mail-opendkim
+    restart: unless-stopped
+    volumes:
+      - ./opendkim/keys:/etc/opendkim/keys
+      - ./opendkim/conf:/etc/opendkim/conf
+    environment:
+      - OPENDKIM_USER=opendkim
+      - OPENDKIM_GROUP=opendkim
+      - OPENDKIM_UMASK=002
+      - OPENDKIM_SOCKET=inet:12301@0.0.0.0
+    ports:
+      - "12301:12301"
+
+volumes:
+  mail-db:
+  maildata:
