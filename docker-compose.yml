@@ -54,7 +54,9 @@ services:
       - dovecot
 
   dovecot:
-    build: ./dovecot
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: mail-dovecot
     restart: unless-stopped
     ports:
