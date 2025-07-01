@@ -64,10 +64,11 @@ services:
       - "993:993"
     volumes:
       - ./dovecot_conf:/etc/dovecot:ro
-      - maildata:/var/mail
+      - maildata:/var/mail/vhosts
     command: [ "dovecot", "-F", "-c", "/etc/dovecot/dovecot.conf" ]
     depends_on:
       - db
+
 
   roundcube:
     image: roundcube/roundcubemail

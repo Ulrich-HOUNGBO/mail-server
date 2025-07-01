@@ -8,6 +8,7 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copier la configuration via volume dans docker-compose.yml (donc pas ici)
+RUN groupadd -g 5000 vmail && useradd -g vmail -u 5000 vmail
 
 # Commande par défaut : lancer dovecot au premier plan
 CMD ["dovecot", "-F"]
