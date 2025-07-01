@@ -1,2 +1,2 @@
-alias_maps = hash:/dev/null
-alias_database = hash:/dev/null
+alias_maps =
+alias_database =

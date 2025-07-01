@@ -68,6 +68,7 @@ services:
     command: [ "dovecot", "-F", "-c", "/etc/dovecot/dovecot.conf" ]
     depends_on:
       - db
+      -
 
 
   roundcube:
