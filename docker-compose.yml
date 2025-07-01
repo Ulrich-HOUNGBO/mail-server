@@ -60,7 +60,6 @@ services:
       - "993:993"
     volumes:
       - ./dovecot_conf/conf.d:/etc/dovecot/conf.d
-      - ./dovecot_conf/dovecot-sql.conf.ext:/etc/dovecot/dovecot-sql.conf.ext
       - maildata:/var/mail
     command: [ "dovecot", "-F" ]
     depends_on:
