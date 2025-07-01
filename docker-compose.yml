@@ -46,6 +46,7 @@ services:
       DKIM_SELECTOR: default
       DKIM_DOMAIN: tldiamond.com
       DKIM_PRIVATE_KEY: /etc/opendkim/keys/tldiamond.com/default.private
+      ALLOWED_SENDER_DOMAINS: "tldiamond.com"
     depends_on:
       - opendkim
       - dovecot
