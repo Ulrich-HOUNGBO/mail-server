@@ -1,11 +1,13 @@
+# Dockerfile à placer à la racine de ton projet (ex: ~/mail-server/Dockerfile)
+
 FROM debian:bullseye-slim
 
+# Installer Dovecot et nettoyer le cache apt
 RUN apt-get update && \
-    apt-get install -y dovecot-core=1:2.3.4.1-10+deb11u5 dovecot-imapd=1:2.3.4.1-10+deb11u5 dovecot-pop3d=1:2.3.4.1-10+deb11u5 && \
+    apt-get install -y dovecot-core dovecot-imapd dovecot-pop3d && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-COPY dovecot_conf /etc/dovecot
+# Copier la configuration via volume dans docker-compose.yml (donc pas ici)
 
-EXPOSE 143 993
-
-CMD ["dovecot", "-F", "-c", "/etc/dovecot/dovecot.conf"]
+# Commande par défaut : lancer dovecot au premier plan
+CMD ["dovecot", "-F"]
