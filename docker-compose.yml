@@ -43,7 +43,7 @@ services:
       - opendkim
 
   dovecot:
-    image: luccio/docker-dovecot
+    image: dovecot/dovecot
     container_name: mail-dovecot
     restart: unless-stopped
     ports:
@@ -53,6 +53,7 @@ services:
       - ./dovecot_conf/conf.d:/etc/dovecot/conf.d
       - ./dovecot_conf/dovecot-sql.conf.ext:/etc/dovecot/dovecot-sql.conf.ext
       - maildata:/var/mail
+    command: [ "dovecot", "-F" ]
     depends_on:
       - db
 
