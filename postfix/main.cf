@@ -1,2 +1,19 @@
-alias_maps =
-alias_database =
+myhostname = mail.tldiamond.com
+mydomain = tldiamond.com
+myorigin = $mydomain
+
+
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+
+
+relay_domains =
+
+
+inet_interfaces = all
+inet_protocols = ipv4
+
+
+smtpd_recipient_restrictions =
+    permit_mynetworks,
+    permit_sasl_authenticated,
+    reject_unauth_destination
