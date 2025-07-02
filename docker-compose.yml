@@ -81,7 +81,7 @@ services:
     container_name: mail-webmail
     restart: unless-stopped
     environment:
-      ROUNDCUBEMAIL_DEFAULT_HOST: ssl://mail.tldiamond.com
+      ROUNDCUBEMAIL_DEFAULT_HOST: ssl://mail.mail-server
       ROUNDCUBEMAIL_SMTP_SERVER: tls://mail.tldiamond.com
       ROUNDCUBEMAIL_SMTP_PORT: 587
       ROUNDCUBEMAIL_DB_TYPE: mysql
