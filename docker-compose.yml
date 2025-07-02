@@ -26,7 +26,7 @@ services:
       DOMAIN: tldiamond.com
       USE_REVERSE_PROXY: "true"
     ports:
-      - "8888:80"
+      - "8888:8888"
     depends_on:
       - db
 
