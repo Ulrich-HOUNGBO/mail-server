@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   db:
     image: mariadb:10.5
@@ -12,6 +10,8 @@ services:
       MYSQL_PASSWORD: mailpass
     volumes:
       - mail-db:/var/lib/mysql
+    networks:
+      - mailnet
 
   postfixadmin:
     image: hardware/postfixadmin
@@ -29,6 +29,8 @@ services:
       - "8888:8888"
     depends_on:
       - db
+    networks:
+      - mailnet
 
   postfix:
     image: boky/postfix
@@ -53,6 +55,8 @@ services:
     depends_on:
       - opendkim
       - dovecot
+    networks:
+      - mailnet
 
   dovecot:
     build:
@@ -69,7 +73,8 @@ services:
     command: [ "dovecot", "-F", "-c", "/etc/dovecot/dovecot.conf" ]
     depends_on:
       - db
-
+    networks:
+      - mailnet
 
   roundcube:
     image: roundcube/roundcubemail
@@ -90,6 +95,8 @@ services:
       - postfix
       - dovecot
       - db
+    networks:
+      - mailnet
 
   opendkim:
     image: instrumentisto/opendkim
@@ -105,7 +112,12 @@ services:
       - OPENDKIM_SOCKET=inet:12301@0.0.0.0
     ports:
       - "12301:12301"
+    networks:
+      - mailnet
 
 volumes:
   mail-db:
   maildata:
+
+networks:
+  mailnet:
