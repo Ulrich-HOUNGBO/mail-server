@@ -39,6 +39,7 @@ services:
       - "587:587"
     volumes:
       - ./postfix:/etc/postfix
+      - ./postfix/aliases:/etc/aliases
     environment:
       HOSTNAME: mail.tldiamond.com
       DOMAIN: tldiamond.com
