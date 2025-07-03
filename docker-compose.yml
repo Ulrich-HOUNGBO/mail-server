@@ -42,7 +42,7 @@ services:
     volumes:
       - ./postfix:/etc/postfix
       - ./postfix/aliases:/etc/aliases
-      - ./
+      - ./postfix/conf:/etc/postfix/mysql
     environment:
       HOSTNAME: mail.tldiamond.com
       DOMAIN: tldiamond.com
