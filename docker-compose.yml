@@ -33,7 +33,9 @@ services:
       - mailnet
 
   postfix:
-    image: boky/postfix
+    build:
+      context: .
+      dockerfile: postfix.Dockerfile
     container_name: mail-postfix
     restart: unless-stopped
     ports:
