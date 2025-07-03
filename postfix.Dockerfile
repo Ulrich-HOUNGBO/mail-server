@@ -5,4 +5,4 @@ RUN apt-get update && \
       postfix postfix-mysql libsasl2-modules && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-CMD ["postfix", "start-fg"]
+CMD service rsyslog start && postfix start && tail -F /var/log/mail.log
