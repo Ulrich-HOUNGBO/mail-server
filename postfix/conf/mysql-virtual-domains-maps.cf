@@ -1,0 +1,5 @@
+user = mailuser
+password = mailpass
+hosts = db
+dbname = postfix
+query = SELECT 1 FROM domain WHERE domain='%s'

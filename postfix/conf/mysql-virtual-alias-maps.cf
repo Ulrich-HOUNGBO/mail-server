@@ -1,0 +1,5 @@
+user = mailuser
+password = mailpass
+hosts = db
+dbname = postfix
+query = SELECT destination FROM alias WHERE source='%s'
